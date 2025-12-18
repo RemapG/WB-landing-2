@@ -17,7 +17,7 @@ export const TEAM_DATA = [
   { 
     name: 'MAX BAZE', 
     role: 'PRODUCER / BEATS', 
-    img: '/assets/img/max.jpg',
+    img: '/assets/img/max.jpg', // Путь относительно папки public
     fallback: 'https://www.woodbazestudio.ru/img/team-2.jpg'
   },
   { 

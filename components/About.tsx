@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TEAM_DATA } from '../data';
 
 const About: React.FC = () => {
@@ -14,7 +14,6 @@ const About: React.FC = () => {
         {TEAM_DATA.map((member, idx) => (
           <div key={idx} className="group cursor-pointer">
             <div className="relative overflow-hidden aspect-[3/4] mb-6 bg-zinc-900 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-700 border border-white/5">
-              {/* Инициалы как бэкграунд */}
               <span className="absolute text-white/10 font-accent text-6xl font-bold uppercase select-none">
                 {member.name.split(' ').map(n => n[0]).join('')}
               </span>
@@ -50,25 +49,38 @@ const About: React.FC = () => {
 
 const TeamMemberImage = ({ member }: { member: any }) => {
   const [retryCount, setRetryCount] = useState(0);
-  const [currentSrc, setCurrentSrc] = useState(member.img);
+  // Добавляем timestamp для обхода кэша при первой загрузке
+  const [currentSrc, setCurrentSrc] = useState(`${member.img}?t=${Date.now()}`);
+
+  useEffect(() => {
+    console.log(`Attempting to load image for ${member.name}: ${currentSrc}`);
+  }, [currentSrc]);
 
   const handleError = () => {
+    console.error(`FAILED to load: ${currentSrc}`);
+    
     if (retryCount === 0) {
-      // Пытаемся заменить расширение на верхний регистр (бывает важно для некоторых серверов)
-      setCurrentSrc(member.img.replace('.jpg', '.JPG'));
+      // Попытка 1: Убираем ведущий слеш (иногда помогает в зависимости от окружения)
+      const noSlash = member.img.startsWith('/') ? member.img.substring(1) : member.img;
+      setCurrentSrc(noSlash);
       setRetryCount(1);
     } else if (retryCount === 1) {
-      // Пытаемся полностью верхний регистр имени файла
-      setCurrentSrc(member.img.toUpperCase());
+      // Попытка 2: Проверяем вариант с .jpeg (если вдруг расширение другое)
+      setCurrentSrc(member.img.replace('.jpg', '.jpeg'));
       setRetryCount(2);
     } else if (retryCount === 2) {
-      // Переходим на фоллбек с оригинального сайта
-      setCurrentSrc(member.fallback);
+      // Попытка 3: Проверяем вариант с .png
+      setCurrentSrc(member.img.replace('.jpg', '.png'));
       setRetryCount(3);
     } else if (retryCount === 3) {
-      // Если всё упало, показываем качественную заглушку
-      setCurrentSrc("https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=600&auto=format&fit=crop");
+      // Попытка 4: Переход на удаленный сервер
+      console.warn(`Switching to remote fallback for ${member.name}`);
+      setCurrentSrc(member.fallback);
       setRetryCount(4);
+    } else if (retryCount === 4) {
+      // Попытка 5: Заглушка Unsplash
+      setCurrentSrc("https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=600&auto=format&fit=crop");
+      setRetryCount(5);
     }
   };
 
