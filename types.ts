@@ -20,7 +20,6 @@ export interface Message {
   text: string;
 }
 
-// Fix: Added Product interface required by Catalog.tsx to resolve member not found error
 export interface Product {
   id: string;
   name: string;
