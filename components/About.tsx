@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { TEAM_DATA } from '../data';
 
 const About: React.FC = () => {
@@ -13,9 +13,15 @@ const About: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         {TEAM_DATA.map((member, idx) => (
           <div key={idx} className="group cursor-pointer">
-            <div className="relative overflow-hidden aspect-[3/4] mb-6 grayscale group-hover:grayscale-0 transition-all duration-700">
-              <img src={member.img} alt={member.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+            <div className="relative overflow-hidden aspect-[3/4] mb-6 bg-zinc-900 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-700 border border-white/5">
+              {/* Инициалы как бэкграунд */}
+              <span className="absolute text-white/10 font-accent text-6xl font-bold uppercase select-none">
+                {member.name.split(' ').map(n => n[0]).join('')}
+              </span>
+              
+              <TeamMemberImage member={member} />
+              
+              <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity"></div>
             </div>
             <h3 className="text-2xl font-accent font-bold mb-1 group-hover:text-[#ccff00] transition-colors">{member.name}</h3>
             <p className="text-xs tracking-[0.3em] text-white/30 uppercase font-bold">{member.role}</p>
@@ -39,6 +45,41 @@ const About: React.FC = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+const TeamMemberImage = ({ member }: { member: any }) => {
+  const [retryCount, setRetryCount] = useState(0);
+  const [currentSrc, setCurrentSrc] = useState(member.img);
+
+  const handleError = () => {
+    if (retryCount === 0) {
+      // Пытаемся заменить расширение на верхний регистр (бывает важно для некоторых серверов)
+      setCurrentSrc(member.img.replace('.jpg', '.JPG'));
+      setRetryCount(1);
+    } else if (retryCount === 1) {
+      // Пытаемся полностью верхний регистр имени файла
+      setCurrentSrc(member.img.toUpperCase());
+      setRetryCount(2);
+    } else if (retryCount === 2) {
+      // Переходим на фоллбек с оригинального сайта
+      setCurrentSrc(member.fallback);
+      setRetryCount(3);
+    } else if (retryCount === 3) {
+      // Если всё упало, показываем качественную заглушку
+      setCurrentSrc("https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=600&auto=format&fit=crop");
+      setRetryCount(4);
+    }
+  };
+
+  return (
+    <img 
+      src={currentSrc} 
+      alt={member.name} 
+      className="relative z-10 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+      loading="lazy"
+      onError={handleError}
+    />
   );
 };
 

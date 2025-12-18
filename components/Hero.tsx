@@ -1,16 +1,21 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { HERO_DATA } from '../data';
 
 const Hero: React.FC = () => {
+  const [bgSrc, setBgSrc] = useState(HERO_DATA.bgImage);
+
   return (
     <div className="relative min-h-[90vh] md:min-h-screen w-full flex flex-col justify-center items-center overflow-hidden bg-[#050505]">
       {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">
         <img 
-          src={HERO_DATA.bgImage} 
-          className="w-full h-full object-cover opacity-20"
+          src={bgSrc} 
+          className="w-full h-full object-cover opacity-30"
           alt="Studio Background"
+          onError={() => {
+            setBgSrc("https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=1600&auto=format&fit=crop");
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#050505]/80 to-[#050505]"></div>
       </div>
@@ -47,7 +52,6 @@ const Hero: React.FC = () => {
         </div>
       </div>
 
-      {/* Marquee effect */}
       <div className="absolute bottom-0 w-full overflow-hidden border-t border-white/5 py-3 md:py-4 bg-black/50 backdrop-blur-sm">
         <div className="marquee font-accent text-[8px] md:text-[10px] tracking-[0.3em] md:tracking-[0.5em] text-white/20 italic">
           <span>MIXING • MASTERING • RECORDING • PRODUCTION • SOUND DESIGN • SONGWRITING • </span>
