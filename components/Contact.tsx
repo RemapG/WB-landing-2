@@ -2,100 +2,68 @@
 import React, { useState } from 'react';
 
 const Contact: React.FC = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    service: 'Recording',
-    message: ''
-  });
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    alert('Заявка отправлена! Мы перезвоним для подтверждения времени.');
-    setFormData({ name: '', phone: '', service: 'Recording', message: '' });
-  };
+  const [formData, setFormData] = useState({ name: '', phone: '', msg: '' });
 
   return (
     <div className="container mx-auto px-6">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-24">
-        <div>
-          <h2 className="text-5xl md:text-7xl font-bold mb-10">Готов создать хитяру?</h2>
-          <p className="text-white/40 text-xl leading-relaxed mb-12">
-            Заполни форму, и наш менеджер свяжется с тобой в течение 15 минут для уточнения деталей проекта и бронирования времени.
-          </p>
+      <div className="flex flex-col lg:flex-row gap-20">
+        <div className="lg:w-1/2">
+          <div className="mb-12">
+            <h2 className="text-4xl md:text-8xl font-accent font-bold mb-4">КОНТАКТЫ</h2>
+            <div className="w-20 h-1 bg-[#ccff00]"></div>
+          </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
+          <div className="space-y-12">
             <div>
-              <h4 className="text-[#c4a484] font-black uppercase tracking-widest text-xs mb-4">Бронирование</h4>
-              <p className="font-bold">+7 (900) 123-45-67</p>
-              <p className="text-white/40 text-sm mt-1">WA / TG / Call</p>
+              <p className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase mb-4">Адрес</p>
+              <p className="text-xl md:text-3xl font-bold">МОСКВА, УЛ. ПРОИЗВОДСТВЕННАЯ, 12</p>
             </div>
             <div>
-              <h4 className="text-[#c4a484] font-black uppercase tracking-widest text-xs mb-4">Локация</h4>
-              <p className="font-bold">Москва</p>
-              <p className="text-white/40 text-sm mt-1">ул. Производственная, 12</p>
+              <p className="text-[10px] font-black tracking-[0.4em] text-white/30 uppercase mb-4">Связь</p>
+              <p className="text-xl md:text-3xl font-bold">+7 (900) 123-45-67</p>
+              <p className="text-[#ccff00] text-sm mt-2 font-bold uppercase tracking-widest">Telegram / WhatsApp</p>
+            </div>
+            <div className="flex gap-4">
+               {['VK', 'TG', 'YT'].map(s => (
+                 <a key={s} href="#" className="w-12 h-12 border border-white/10 flex items-center justify-center font-bold text-xs hover:bg-[#ccff00] hover:text-black transition-all">{s}</a>
+               ))}
             </div>
           </div>
         </div>
 
-        <div className="bg-[#111] p-10 rounded-3xl border border-white/5 relative">
-          <div className="absolute -top-6 -left-6 bg-[#c4a484] text-black font-black px-6 py-2 rounded-full text-xs uppercase tracking-widest">
-            Order session
-          </div>
-          <form onSubmit={handleSubmit} className="space-y-8">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <label className="block text-[10px] uppercase tracking-widest font-black text-white/30 mb-3">Имя / Никнейм</label>
+        <div className="lg:w-1/2">
+          <form className="bg-black p-8 md:p-12 border border-white/5 shadow-2xl relative">
+            <div className="absolute top-0 right-0 w-16 h-16 bg-[#ccff00]/10 flex items-center justify-center">
+               <div className="w-2 h-2 bg-[#ccff00] animate-ping"></div>
+            </div>
+            <h3 className="text-2xl font-accent font-bold mb-10">ОСТАВИТЬ ЗАЯВКУ</h3>
+            
+            <div className="space-y-8">
+              <div className="relative">
                 <input 
                   type="text" 
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-[#c4a484] outline-none transition-all text-white"
-                  placeholder="Ваш псевдоним"
-                  required
+                  placeholder="ИМЯ"
+                  className="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#ccff00] text-sm font-bold uppercase tracking-widest transition-all"
                 />
               </div>
-              <div>
-                <label className="block text-[10px] uppercase tracking-widest font-black text-white/30 mb-3">Телефон</label>
+              <div className="relative">
                 <input 
                   type="tel" 
-                  value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-[#c4a484] outline-none transition-all text-white"
-                  placeholder="+7 (___) ___-__-__"
-                  required
+                  placeholder="ТЕЛЕФОН"
+                  className="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#ccff00] text-sm font-bold uppercase tracking-widest transition-all"
                 />
               </div>
+              <div className="relative">
+                <textarea 
+                  rows={3}
+                  placeholder="ЧТО НУЖНО СДЕЛАТЬ?"
+                  className="w-full bg-transparent border-b border-white/20 py-4 focus:outline-none focus:border-[#ccff00] text-sm font-bold uppercase tracking-widest transition-all resize-none"
+                ></textarea>
+              </div>
+              <button className="w-full py-6 bg-[#ccff00] text-black font-accent font-bold text-sm hover:bg-white transition-all">
+                ОТПРАВИТЬ / SEND
+              </button>
             </div>
-            <div>
-              <label className="block text-[10px] uppercase tracking-widest font-black text-white/30 mb-3">Тип услуги</label>
-              <select 
-                value={formData.service}
-                onChange={(e) => setFormData({...formData, service: e.target.value})}
-                className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-[#c4a484] outline-none transition-all text-white"
-              >
-                <option value="Recording">Запись (2000₽/час)</option>
-                <option value="Mixing">Сведение (от 8000₽)</option>
-                <option value="Mastering">Мастеринг (3500₽)</option>
-                <option value="Production">Песня под ключ</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-[10px] uppercase tracking-widest font-black text-white/30 mb-3">Комментарий</label>
-              <textarea 
-                rows={4}
-                value={formData.message}
-                onChange={(e) => setFormData({...formData, message: e.target.value})}
-                className="w-full bg-white/5 border border-white/10 rounded-xl p-4 focus:border-[#c4a484] outline-none transition-all resize-none text-white"
-                placeholder="Расскажите о своем стиле, референсы и т.д."
-              ></textarea>
-            </div>
-            <button 
-              type="submit" 
-              className="w-full py-5 bg-white text-black rounded-xl uppercase tracking-[0.2em] font-black hover:bg-[#c4a484] transition-all"
-            >
-              Отправить заявку
-            </button>
           </form>
         </div>
       </div>

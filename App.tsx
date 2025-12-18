@@ -3,15 +3,16 @@ import React from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Services from './components/Services';
-import Portfolio from './components/Portfolio';
-import Equipment from './components/Equipment';
+import Prices from './components/Prices';
 import About from './components/About';
+import Portfolio from './components/Portfolio';
+import Process from './components/Process';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 
 const App: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-[#0a0a0a] text-white">
+    <div className="min-h-screen flex flex-col bg-[#050505] text-white">
       <Header />
       
       <main className="flex-grow">
@@ -19,23 +20,27 @@ const App: React.FC = () => {
           <Hero />
         </section>
         
-        <section id="services" className="py-24 bg-[#0f0f0f]">
+        <section id="services" className="py-20 md:py-32 border-b border-white/5">
           <Services />
         </section>
 
-        <section id="portfolio" className="py-24 bg-[#0a0a0a]">
-          <Portfolio />
+        <section id="prices" className="py-20 md:py-32 bg-[#0a0a0a] border-b border-white/5">
+          <Prices />
         </section>
 
-        <section id="equipment" className="py-24 bg-[#0f0f0f]">
-          <Equipment />
-        </section>
-
-        <section id="about" className="py-24 bg-[#0a0a0a]">
+        <section id="team" className="py-20 md:py-32 border-b border-white/5">
           <About />
         </section>
 
-        <section id="contact" className="py-24 bg-[#0f0f0f]">
+        <section id="portfolio" className="py-20 md:py-32 bg-[#0a0a0a] border-b border-white/5">
+          <Portfolio />
+        </section>
+
+        <section id="process" className="py-20 md:py-32 border-b border-white/5">
+          <Process />
+        </section>
+
+        <section id="contact" className="py-20 md:py-32 bg-[#0a0a0a]">
           <Contact />
         </section>
       </main>

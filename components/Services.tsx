@@ -1,31 +1,33 @@
 
 import React from 'react';
 
-const services = [
-  { id: '01', title: 'VOICE REC', desc: 'Запись на легендарные микрофоны. Твой голос будет звучать как у кумиров.', price: '2000' },
-  { id: '02', title: 'MIXING', desc: 'Сведение, которое заставит колонки дышать. Полный баланс и мощь.', price: '8000' },
-  { id: '03', title: 'MASTER', desc: 'Финальный пробив для стримингов. Громко. Чисто. Масштабно.', price: '3500' },
-  { id: '04', title: 'BEATMAKING', desc: 'Эксклюзивный продакшн. Никаких тайп-битов, только твой вайб.', price: '15000' },
+const serviceList = [
+  { title: 'RECORDING', icon: '🎤', items: ['Хип-хоп', 'Поп', 'Рок', 'Подкасты'] },
+  { title: 'POST-PROD', icon: '🎚️', items: ['Сведение', 'Мастеринг', 'Тюн вокала'] },
+  { title: 'MUSIC', icon: '🎹', items: ['Битмейкинг', 'Аранжировка', 'Сонграйтинг'] },
+  { title: 'AD/VIDEO', icon: '🎬', items: ['Саунд-дизайн', 'Диктор', 'Озвучка'] },
 ];
 
 const Services: React.FC = () => {
   return (
     <div className="container mx-auto px-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-20 gap-8">
-        <h2 className="text-5xl md:text-8xl font-accent font-bold">Services</h2>
-        <p className="text-white/40 max-w-sm lowercase">Прайс-лист для тех, кто ценит качество, а не дешевые понты.</p>
+      <div className="mb-12 md:mb-20">
+        <h2 className="text-4xl md:text-8xl font-accent font-bold mb-4">УСЛУГИ</h2>
+        <div className="w-20 h-1 bg-[#ccff00]"></div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border-t border-l border-white/10">
-        {services.map((s) => (
-          <div key={s.id} className="group p-10 border-r border-b border-white/10 hover:bg-[#ccff00] transition-colors duration-500 cursor-pointer">
-            <div className="flex justify-between items-start mb-12">
-              <span className="font-accent text-sm group-hover:text-black">{s.id}</span>
-              <span className="text-4xl group-hover:text-black">→</span>
-            </div>
-            <h3 className="text-4xl md:text-6xl font-accent font-bold mb-6 group-hover:text-black">{s.title}</h3>
-            <p className="text-white/40 group-hover:text-black/60 mb-8 lowercase h-12 overflow-hidden">{s.desc}</p>
-            <div className="text-2xl font-bold group-hover:text-black">от {s.price} ₽</div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        {serviceList.map((s, idx) => (
+          <div key={idx} className="p-8 border border-white/5 hover:border-[#ccff00]/50 bg-[#0a0a0a] transition-all group">
+            <div className="text-4xl mb-6 grayscale group-hover:grayscale-0 transition-all">{s.icon}</div>
+            <h3 className="text-xl md:text-2xl font-accent font-bold mb-6 text-[#ccff00]">{s.title}</h3>
+            <ul className="space-y-3">
+              {s.items.map((item, i) => (
+                <li key={i} className="text-white/40 text-sm uppercase tracking-widest font-bold">
+                  — {item}
+                </li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>
