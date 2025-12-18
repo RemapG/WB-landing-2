@@ -3,7 +3,11 @@ import React, { useState } from 'react';
 import { HERO_DATA } from '../data';
 
 const Hero: React.FC = () => {
-  const [bgSrc, setBgSrc] = useState(HERO_DATA.bgImage);
+  // Безопасный доступ к переменным окружения Vite с проверкой на существование объекта env
+  const env = (import.meta as any).env;
+  const baseUrl = env?.BASE_URL || '/';
+  const initialBg = `${baseUrl}/${HERO_DATA.bgImage}`.replace(/\/+/g, '/');
+  const [bgSrc, setBgSrc] = useState(initialBg);
 
   return (
     <div className="relative min-h-[90vh] md:min-h-screen w-full flex flex-col justify-center items-center overflow-hidden bg-[#050505]">

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { TEAM_DATA } from '../data';
 
 const About: React.FC = () => {
@@ -48,39 +48,21 @@ const About: React.FC = () => {
 };
 
 const TeamMemberImage = ({ member }: { member: any }) => {
-  const [retryCount, setRetryCount] = useState(0);
-  // Добавляем timestamp для обхода кэша при первой загрузке
-  const [currentSrc, setCurrentSrc] = useState(`${member.img}?t=${Date.now()}`);
-
-  useEffect(() => {
-    console.log(`Attempting to load image for ${member.name}: ${currentSrc}`);
-  }, [currentSrc]);
+  // Безопасный доступ к переменным окружения Vite
+  const env = (import.meta as any).env;
+  const baseUrl = env?.BASE_URL || '/';
+  
+  // Формируем путь к изображению. Если baseUrl пустой или '/', очищаем двойные слеши.
+  const primarySrc = `${baseUrl}/${member.img}`.replace(/\/+/g, '/');
+  
+  const [currentSrc, setCurrentSrc] = useState(primarySrc);
+  const [hasError, setHasError] = useState(false);
 
   const handleError = () => {
-    console.error(`FAILED to load: ${currentSrc}`);
-    
-    if (retryCount === 0) {
-      // Попытка 1: Убираем ведущий слеш (иногда помогает в зависимости от окружения)
-      const noSlash = member.img.startsWith('/') ? member.img.substring(1) : member.img;
-      setCurrentSrc(noSlash);
-      setRetryCount(1);
-    } else if (retryCount === 1) {
-      // Попытка 2: Проверяем вариант с .jpeg (если вдруг расширение другое)
-      setCurrentSrc(member.img.replace('.jpg', '.jpeg'));
-      setRetryCount(2);
-    } else if (retryCount === 2) {
-      // Попытка 3: Проверяем вариант с .png
-      setCurrentSrc(member.img.replace('.jpg', '.png'));
-      setRetryCount(3);
-    } else if (retryCount === 3) {
-      // Попытка 4: Переход на удаленный сервер
-      console.warn(`Switching to remote fallback for ${member.name}`);
+    if (!hasError) {
+      console.warn(`[WoodBaze] Локальный файл ${primarySrc} не найден. Переключаюсь на фоллбек.`);
       setCurrentSrc(member.fallback);
-      setRetryCount(4);
-    } else if (retryCount === 4) {
-      // Попытка 5: Заглушка Unsplash
-      setCurrentSrc("https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=600&auto=format&fit=crop");
-      setRetryCount(5);
+      setHasError(true);
     }
   };
 
@@ -89,7 +71,6 @@ const TeamMemberImage = ({ member }: { member: any }) => {
       src={currentSrc} 
       alt={member.name} 
       className="relative z-10 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-      loading="lazy"
       onError={handleError}
     />
   );
