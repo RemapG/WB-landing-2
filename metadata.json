@@ -1,0 +1,7 @@
+{
+  "name": "WoodBaze Sound Studio",
+  "description": "Профессиональная студия звукозаписи, сведения и мастеринга. WoodBaze Studio — качество звука мирового уровня.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
