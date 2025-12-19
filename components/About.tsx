@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { TEAM_DATA } from '../data';
 
 const About: React.FC = () => {
@@ -10,16 +10,18 @@ const About: React.FC = () => {
         <div className="w-20 h-1 bg-[#ccff00]"></div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-5xl">
         {TEAM_DATA.map((member, idx) => (
           <div key={idx} className="group cursor-pointer">
-            <div className="relative overflow-hidden aspect-[3/4] mb-6 bg-zinc-900 flex items-center justify-center grayscale group-hover:grayscale-0 transition-all duration-700 border border-white/5">
-              <span className="absolute text-white/10 font-accent text-6xl font-bold uppercase select-none">
-                {member.name.split(' ').map(n => n[0]).join('')}
-              </span>
-              
-              <TeamMemberImage member={member} />
-              
+            <div className="relative overflow-hidden aspect-[3/4] mb-6 bg-zinc-900 flex items-center justify-center transition-all duration-700 border border-white/5 shadow-2xl">
+              <img 
+                src={member.img} 
+                alt={member.name} 
+                className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-110 transition-all duration-700"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=600&auto=format&fit=crop";
+                }}
+              />
               <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity"></div>
             </div>
             <h3 className="text-2xl font-accent font-bold mb-1 group-hover:text-[#ccff00] transition-colors">{member.name}</h3>
@@ -44,35 +46,6 @@ const About: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
-
-const TeamMemberImage = ({ member }: { member: any }) => {
-  // Безопасный доступ к переменным окружения Vite
-  const env = (import.meta as any).env;
-  const baseUrl = env?.BASE_URL || '/';
-  
-  // Формируем путь к изображению. Если baseUrl пустой или '/', очищаем двойные слеши.
-  const primarySrc = `${baseUrl}/${member.img}`.replace(/\/+/g, '/');
-  
-  const [currentSrc, setCurrentSrc] = useState(primarySrc);
-  const [hasError, setHasError] = useState(false);
-
-  const handleError = () => {
-    if (!hasError) {
-      console.warn(`[WoodBaze] Локальный файл ${primarySrc} не найден. Переключаюсь на фоллбек.`);
-      setCurrentSrc(member.fallback);
-      setHasError(true);
-    }
-  };
-
-  return (
-    <img 
-      src={currentSrc} 
-      alt={member.name} 
-      className="relative z-10 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-      onError={handleError}
-    />
   );
 };
 

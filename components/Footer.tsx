@@ -39,9 +39,9 @@ const Footer: React.FC = () => {
           <div>
             <h4 className="text-xs uppercase tracking-[0.3em] font-black mb-10 text-white/20">Контакты</h4>
             <ul className="space-y-4 text-sm font-bold">
-              <li className="text-white">+7 (900) 123-45-67</li>
-              <li className="text-white/50">studio@woodbaze.ru</li>
-              <li className="text-white/50">Москва, ул. Производственная, 12</li>
+              <li className="text-white">+7 (960) 926-73-85</li>
+              <li className="text-white/50">woodbazestudio@gmail.com</li>
+              <li className="text-white/50">Кемерово, ул. Карболитовская, 1/3</li>
             </ul>
           </div>
 
@@ -52,7 +52,7 @@ const Footer: React.FC = () => {
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                 <span className="text-xs font-black uppercase">Студия Свободна</span>
               </div>
-              <p className="text-[10px] text-white/40">Ближайшее окно: Сегодня 18:00</p>
+              <p className="text-[10px] text-white/40">Ближайшее окно: Сегодня </p>
             </div>
           </div>
         </div>
